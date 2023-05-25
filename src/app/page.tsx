@@ -1,9 +1,9 @@
-import Image from 'next/image'
+import Image from "next/image";
 
 export default function Home() {
   return (
-    <main className='container'>
+    <main className="">
       <div>Daisy UI</div>
     </main>
-  )
+  );
 }
