@@ -3,9 +3,11 @@ import {
   CheckCircleIcon,
   ChevronDownIcon,
   SwatchIcon,
+  ArrowRightOnRectangleIcon,
+  ArrowLeftOnRectangleIcon,
 } from "@heroicons/react/20/solid";
 import { User } from "@prisma/client";
-import { signOut } from "next-auth/react";
+import { signIn, signOut } from "next-auth/react";
 
 const THEMES = [
   "light",
@@ -78,7 +80,7 @@ export default function Header({
               {theme[0].toUpperCase() + theme.slice(1)}
               <ChevronDownIcon className="w-5 h-5" />
             </a>
-            <ul className="p-2 shadow-lg bg-base-100 w-60 max-h-[400px] overflow-y-auto right-0">
+            <ul className="p-2 shadow-lg bg-base-100 w-60 max-h-[400px] overflow-y-auto right-0 mt-4">
               {THEMES.map((THEME) => (
                 <li
                   data-theme={THEME}
@@ -97,28 +99,41 @@ export default function Header({
               ))}
             </ul>
           </li>
-          <li tabIndex={2}>
-            <a>
-              <div className="avatar p-0 m-0">
-                <div className="w-7 mask mask-squircle">
-                  <img
-                    src={
-                      currentUser?.image ??
-                      "https://picsum.photos/500/300?random=5"
-                    }
-                  />
+          {currentUser ? (
+            <li tabIndex={2}>
+              <a>
+                <div className="avatar p-0 m-0">
+                  <div className="w-7 mask mask-squircle">
+                    <img
+                      src={
+                        currentUser.image ??
+                        "https://picsum.photos/500/300?random=5"
+                      }
+                    />
+                  </div>
                 </div>
-              </div>
-            </a>
-            <ul className="p-2 bg-base-100 right-0">
-              <li>
-                <a>{currentUser?.name}</a>
-              </li>
-              <li>
-                <a onClick={() => signOut()}>Logout</a>
-              </li>
-            </ul>
-          </li>
+              </a>
+              <ul className="p-2 shadow-lg bg-base-100 right-0 mt-4">
+                <li>
+                  <a>{currentUser.name}</a>
+                </li>
+                <div className="divider p-0 m-0"></div>
+                <li className="bg-error">
+                  <a onClick={() => signOut()} className="text-error-content">
+                    <ArrowRightOnRectangleIcon className="h-6 w-6" />
+                    Logout
+                  </a>
+                </li>
+              </ul>
+            </li>
+          ) : (
+            <li>
+              <a onClick={() => signIn()}>
+                <ArrowLeftOnRectangleIcon className="h-6 w-6 rotate-180" />
+                SignIn
+              </a>
+            </li>
+          )}
         </ul>
       </div>
     </div>
